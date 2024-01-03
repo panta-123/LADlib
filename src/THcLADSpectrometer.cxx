@@ -1,7 +1,7 @@
 #include "THcLADSpectrometer.h"
 
 THcLADSpectrometer::THcLADSpectrometer( const char* name, const char* description ) :
-  THaSpectrometer(name, desc)
+  THaSpectrometer(name, description)
 {
   // default constructor 
 
@@ -17,9 +17,16 @@ THcLADSpectrometer::~THcLADSpectrometer()
 }
 
 //____________________________________________________________________
+void THcLADSpectrometer::Clear( Option_t* opt )
+{
+
+}
+
+//____________________________________________________________________
 Int_t THcLADSpectrometer::DefineVariables( EMode mode )
 {
 
+  return 0;
 }
 
 //____________________________________________________________________
@@ -50,7 +57,7 @@ Int_t THcLADSpectrometer::FindVertices( TClonesArray& tracks )
   // depends
   // (see THcHallCSpectrometer)
   
-
+  return 0;
 }
 
 ClassImp(THcLADSpectrometer)

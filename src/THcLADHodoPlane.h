@@ -1,5 +1,8 @@
-#ifndef THcLADHodoscope_h
-#define THcLADHodoscope_h
+#ifndef THcLADHodoPlane_h
+#define THcLADHodoPlane_h
+
+#include "THaSubDetector.h"
+#include "TClonesArray.h"
 
 // rough class outline for LAD Hodoscope plane
 
@@ -15,8 +18,8 @@ class THcLADHodoPlane : public THaSubDetector {
   virtual EStatus Init( const TDatime& date );
 
   virtual Int_t CoarseProcess( TClonesArray& tracks );
-  virtual Int_t FindProcess( TClonesArray& tracks );
-  virtual Int_t ProcessHits( TClonesArray& rawhits );
+  virtual Int_t FineProcess( TClonesArray& tracks );
+  virtual Int_t ProcessHits( TClonesArray* rawhits );
   
  protected:
   
@@ -27,4 +30,4 @@ class THcLADHodoPlane : public THaSubDetector {
 
 };
 
-#endif /* THcLADHodoscope_h */
+#endif /* THcLADHodPlane_h */

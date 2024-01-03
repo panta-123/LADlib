@@ -1,6 +1,9 @@
 #ifndef THcLADHodoscope_h
 #define THcLADHodoscope_h
 
+#include "THaNonTrackingDetector.h"
+#include "THcHitList.h"
+
 class THcLADHodoscope : public THaNonTrackingDetector, public THcHitList {
  public:
 

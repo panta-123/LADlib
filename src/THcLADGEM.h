@@ -2,6 +2,7 @@
 #define THcLADGEM_h
 
 #include "THaTrackingDetector.h"
+#include "THcHitList.h"
 
 class THcLADGEM : public THaTrackingDetector, public THcHitList {
  public:

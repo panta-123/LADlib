@@ -8,7 +8,6 @@
 /////////////////////////////////////////////////
 
 #include "THaSpectrometer.h"
-#include "THcLADSpectrometer.h"
 
 class THcLADSpectrometer : public THaSpectrometer {
 
@@ -32,6 +31,8 @@ class THcLADSpectrometer : public THaSpectrometer {
   virtual Int_t Decode( const THaEvData& );
 
  protected:
+
+  Int_t   fNtracks;
 
   virtual Int_t DefineVariables( EMode mode = kDefine );
   virtual Int_t ReadDatabase( const TDatime& date );
