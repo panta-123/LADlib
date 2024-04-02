@@ -13,6 +13,7 @@ set(src
   THcLADSpectrometer.cxx
   THcLADHodoscope.cxx
   THcLADHodoPlane.cxx
+  THcLADHodoHit.cxx
   THcLADGEM.cxx
   THcLADGEMPlane.cxx
   )
