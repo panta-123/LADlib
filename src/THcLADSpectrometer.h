@@ -28,6 +28,7 @@ class THcLADSpectrometer : public THaSpectrometer {
   */
 
   virtual Int_t FindVertices( TClonesArray& tracks );
+  virtual Int_t TrackCalc();
   virtual Int_t Decode( const THaEvData& );
 
  protected:

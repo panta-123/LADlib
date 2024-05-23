@@ -59,5 +59,11 @@ Int_t THcLADSpectrometer::FindVertices( TClonesArray& tracks )
   
   return 0;
 }
+//____________________________________________________________________
+Int_t THcLADSpectrometer::TrackCalc()
+{
+
+  return 0;
+}
 
 ClassImp(THcLADSpectrometer)
