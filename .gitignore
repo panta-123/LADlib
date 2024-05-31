@@ -5,7 +5,7 @@
 *.d
 *.so
 
-BUILD*/
+build*/
 include/
 lib64/
 CMakeFiles/

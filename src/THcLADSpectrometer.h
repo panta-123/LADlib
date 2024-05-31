@@ -11,15 +11,13 @@
 
 class THcLADSpectrometer : public THaSpectrometer {
 
- public:
-
-  THcLADSpectrometer( const char* name, const char* description );
+public:
+  THcLADSpectrometer(const char *name, const char *description);
   virtual ~THcLADSpectrometer();
-  
-  virtual void  Clear( Option_t* opt="" );
 
+  virtual void Clear(Option_t *opt = "");
 
-  // In case we need to redefine these functions 
+  // In case we need to redefine these functions
   /*
   virtual Int_t CoarseReconstruct();
   virtual Int_t CoarseTrack();
@@ -27,19 +25,19 @@ class THcLADSpectrometer : public THaSpectrometer {
   virtual Int_t Track();
   */
 
-  virtual Int_t FindVertices( TClonesArray& tracks );
+  virtual Int_t FindVertices(TClonesArray &tracks);
   virtual Int_t TrackCalc();
-  virtual Int_t Decode( const THaEvData& );
+  virtual Int_t Decode(const THaEvData &);
 
- protected:
+  virtual Int_t DefineVariables(EMode mode = kDefine);
+  virtual Int_t ReadDatabase(const TDatime &date);
 
-  Int_t   fNtracks;
+protected:
+  Int_t fNtracks;
+  THcLADHodoscope* fHodo;
+  THcLADGEM* fGEM;
 
-  virtual Int_t DefineVariables( EMode mode = kDefine );
-  virtual Int_t ReadDatabase( const TDatime& date );
-  
-  ClassDef(THcLADSpectrometer,0)
-    
+  ClassDef(THcLADSpectrometer, 0)
 };
 
 #endif /* THcLADSpectrometer_h */
