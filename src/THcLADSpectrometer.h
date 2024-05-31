@@ -8,6 +8,8 @@
 /////////////////////////////////////////////////
 
 #include "THaSpectrometer.h"
+#include "THcLADHodoscope.h"
+#include "THcLADGEM.h"
 
 class THcLADSpectrometer : public THaSpectrometer {
 
@@ -31,6 +33,7 @@ public:
 
   virtual Int_t DefineVariables(EMode mode = kDefine);
   virtual Int_t ReadDatabase(const TDatime &date);
+  virtual Int_t ReadRunDatabase(const TDatime &date);
 
 protected:
   Int_t fNtracks;

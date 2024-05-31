@@ -1,5 +1,6 @@
 #include "THcLADSpectrometer.h"
 
+
 THcLADSpectrometer::THcLADSpectrometer(const char *name, const char *description) : THaSpectrometer(name, description) {
   // default constructor
 }
@@ -22,7 +23,7 @@ Int_t THcLADSpectrometer::ReadDatabase(const TDatime &date) {
   static const char *const here = "THcLADSpectrometer::ReadDatabase";
 
 #ifdef WITH_DEBUG
-  cout << "In " + here << endl;
+  cout << "In THcLADSpectrometer::ReadDatabase" << endl;
 #endif
 
   const char *detector_name = "hod";
@@ -36,6 +37,14 @@ Int_t THcLADSpectrometer::ReadDatabase(const TDatime &date) {
     Error("THcLADSpectrometer", "Cannot find lad hodoscope detector %s", detector_name);
     fHodo = NULL;
   }
+
+  return kOK;
+}
+//____________________________________________________________________
+Int_t THcLADSpectrometer::ReadRunDatabase( const TDatime& date )
+{
+  // Override THaSpectrometer with nop method.  All needed kinamatics
+  // read in ReadDatabase.
 
   return kOK;
 }
