@@ -3,13 +3,13 @@ hcana classes for the Hall C LAD experiments
 
 To build
 
-    % cmake -B BUILD -S . -DCMAKE_INSTALL_PREFIX=<install location>
-    % cmake --build BUILD -j4
+    % cmake -B build -S . -DCMAKE_INSTALL_PREFIX=<install location>
+    % cmake --build build -j4
 
 Check that the library and classes are visible
 
     % hcana -l
-    hcana [0] gSystem->Load("BUILD/src/libNPS")
+    hcana [0] gSystem->Load("build/src/libNPS")
     (int) 0
     hcana [1] .class THcLADHodoPlane
     ===========================================================================
@@ -25,7 +25,7 @@ Check that the library and classes are visible
     ...
 Install the library
 
-    % cmake --install BUILD
+    % cmake --install build
 
 Add the library to `LD_Library_Path`
 eg.
