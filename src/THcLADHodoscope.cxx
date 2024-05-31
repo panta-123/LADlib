@@ -9,6 +9,7 @@
 #include "VarType.h"
 #include "THcGlobals.h"
 #include "THcParmList.h"
+#include "THcDetectorMap.h"
 
 //_________________________________________________________________
 THcLADHodoscope::THcLADHodoscope( const char* name, const char* description,
@@ -50,6 +51,23 @@ void THcLADHodoscope::Clear( Option_t* opt )
 //_________________________________________________________________
 THaAnalysisObject::EStatus THcLADHodoscope::Init( const TDatime& date )
 {
+
+  char EngineDID[] = "xSCIN";
+  EngineDID[0] = toupper(GetApparatus()->GetName()[0]);
+  if( gHcDetectorMap->FillMap(fDetMap, EngineDID) < 0 ) {
+    static const char* const here = "Init()";
+    Error( Here(here), "Error filling detectormap for %s.", EngineDID );
+    return kInitError;
+  }
+
+  // Should probably put this in ReadDatabase as we will know the
+  // maximum number of hits after setting up the detector map
+  // But it needs to happen before the sub detectors are initialized
+  // so that they can get the pointer to the hitlist.
+  cout << " Hodo tdc ref time cut = " << fTDC_RefTimeCut << " " << fADC_RefTimeCut << endl;
+
+  InitHitList(fDetMap, "THcRawHodoHit", fDetMap->GetTotNumChan()+1,
+	      fTDC_RefTimeCut, fADC_RefTimeCut);
 
   EStatus status;
   if( (status = THaNonTrackingDetector::Init( date )) )
