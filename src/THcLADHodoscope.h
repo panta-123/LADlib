@@ -65,11 +65,13 @@ class THcLADHodoscope : public THaNonTrackingDetector, public THcHitList {
   Double_t *fHodoPosAdcTimeWindowMax;
   
   THcLADHodoPlane** fPlanes;
+  char** fPlaneNames;
 
   Bool_t   *fPresentP;
 
   virtual Int_t DefineVariables( EMode mode = kDefine );
   virtual Int_t ReadDatabase( const TDatime& date );
+  void    Setup(const char* name, const char* description);
 
   ClassDef(THcLADHodoscope,0)
 

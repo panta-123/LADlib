@@ -47,10 +47,81 @@ void THcLADHodoscope::Clear( Option_t* opt )
 {
 
 }
+//_________________________________________________________________
+
+void THcLADHodoscope::Setup(const char* name, const char* description)
+{
+  /**
+     Create the scintillator plane objects for the hodoscope.
+
+     Uses the Xhodo_num_planes and Xhodo_plane_names to get the number of
+     planes and their names.
+
+  */
+  if( IsZombie()) return;
+
+  // fDebug = 1;  // Keep this at one while we're working on the code
+
+  char prefix[2];
+
+  prefix[0]=tolower(GetApparatus()->GetName()[0]);
+  prefix[1]='\0';
+
+  TString temp(prefix[0]);
+  
+  TString histname=temp+"_timehist";
+  
+  string planenamelist;
+  DBRequest listextra[]={
+    {"hodo_num_planes", &fNPlanes, kInt},
+    {"hodo_plane_names",&planenamelist, kString},
+    {"hodo_tdcrefcut", &fTDC_RefTimeCut, kInt, 0, 1},
+    {"hodo_adcrefcut", &fADC_RefTimeCut, kInt, 0, 1},
+    {0}
+  };
+  //fNPlanes = 4; 		// Default if not defined
+  fTDC_RefTimeCut = 0;		// Minimum allowed reference times
+  fADC_RefTimeCut = 0;
+  gHcParms->LoadParmValues((DBRequest*)&listextra,prefix);
+
+  cout << "Plane Name List : " << planenamelist << endl;
+
+  vector<string> plane_names = Podd::vsplit(planenamelist);
+  // Plane names
+  if(plane_names.size() != (UInt_t) fNPlanes) {
+    cout << "ERROR: Number of planes " << fNPlanes << " doesn't agree with number of plane names " << plane_names.size() << endl;
+    // Should quit.  Is there an official way to quit?
+  }
+
+  fPlaneNames = new char* [fNPlanes];
+  for(Int_t i=0;i<fNPlanes;i++) {
+    fPlaneNames[i] = new char[plane_names[i].length()+1];
+    strcpy(fPlaneNames[i], plane_names[i].c_str());
+  }
+
+  // Probably shouldn't assume that description is defined
+  char* desc = new char[strlen(description)+100];
+  fPlanes = new THcLADHodoPlane* [fNPlanes];
+  for(Int_t i=0;i < fNPlanes;i++) {
+    strcpy(desc, description);
+    strcat(desc, " Plane ");
+    strcat(desc, fPlaneNames[i]);
+    fPlanes[i] = new THcLADHodoPlane(fPlaneNames[i], desc, i+1, this); // Number planes starting from zero!!
+    cout << "Created Scintillator Plane " << fPlaneNames[i] << ", " << desc << endl;
+  }
+  // // Save the nominal particle mass
+  // THcHallCSpectrometer *app = dynamic_cast<THcHallCSpectrometer*>(GetApparatus());
+  // fPartMass = app->GetParticleMass();
+  // fBetaNominal = app->GetBetaAtPcentral();
+
+
+  delete [] desc;
+}
 
 //_________________________________________________________________
 THaAnalysisObject::EStatus THcLADHodoscope::Init( const TDatime& date )
 {
+  Setup(GetName(), GetTitle());
 
   char EngineDID[] = "xSCIN";
   EngineDID[0] = toupper(GetApparatus()->GetName()[0]);
@@ -109,7 +180,7 @@ Int_t THcLADHodoscope::ReadDatabase( const TDatime& date )
 
   // First, get # of planes
   DBRequest list[] = {
-    {"hod_num_planes", &fNPlanes, kInt},
+    {"hodo_num_planes", &fNPlanes, kInt},
     {0}
   };
 
@@ -122,7 +193,7 @@ Int_t THcLADHodoscope::ReadDatabase( const TDatime& date )
   for(int ip = 0; ip < fNPlanes; ip++)
     {
       DBRequest list2[] = {
-	{Form("hod_%d_nr", ip),      &fNPaddle[ip], kInt},
+	{Form("hodo_%d_nr", ip),      &fNPaddle[ip], kInt},
 	{0}
       };
 
