@@ -144,12 +144,36 @@ THaAnalysisObject::EStatus THcLADHodoscope::Init( const TDatime& date )
   if( (status = THaNonTrackingDetector::Init( date )) )
     return fStatus = status;
   
+  for(Int_t ip=0;ip<fNPlanes;ip++) {
+    if((status = fPlanes[ip]->Init( date ))) {
+      return fStatus=status;
+    }
+  }
+
+
+  // fNScinHits     = new Int_t [fNPlanes];
+  // fGoodPlaneTime = new Bool_t [fNPlanes];
+  // fNPlaneTime    = new Int_t [fNPlanes];
+  // fSumPlaneTime  = new Double_t [fNPlanes];
+
+  //  Double_t  fHitCnt4 = 0., fHitCnt3 = 0.;
+
+  // Int_t m = 0;
+  // fScinHit = new Double_t*[fNPlanes];
+  // for ( m = 0; m < fNPlanes; m++ ){
+  //   fScinHit[m] = new Double_t[fNPaddle[0]];
+  // }
+
+  // for (int ip=0; ip<fNPlanes; ++ip) {
+  //   fScinHitPaddle.emplace_back(fNPaddle[ip], 0);
+  // }
+
   fPresentP = 0;
   THaVar* vpresent = gHaVars->Find(Form("%s.present",GetApparatus()->GetName()));
   if(vpresent) {
     fPresentP = (Bool_t *) vpresent->GetValuePointer();
   }
-
+  
   return kOK;
 }
 
@@ -173,7 +197,7 @@ Int_t THcLADHodoscope::DefineVariables( EMode mode )
 Int_t THcLADHodoscope::ReadDatabase( const TDatime& date )
 {
 
-
+  cout << "THcLADHodoscope::ReadDatabase()" << endl;
   char prefix[2];
   prefix[0] = tolower(GetApparatus()->GetName()[0]); // "lad"
   prefix[1] = '\0';
