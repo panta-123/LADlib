@@ -393,13 +393,12 @@ Int_t THcLADHodoPlane::Decode(const THaEvData &evdata) {
 Int_t THcLADHodoPlane::ReadDatabase(const TDatime &date) {
 
   // Read database files as needed here
-  std::cout << "TEST123TEST123"<<std::endl;
   char prefix[2];
   prefix[0] = tolower(GetParent()->GetPrefix()[0]);
   prefix[1] = '\0';
 
   // Get # of element for each hodo detector
-  string parname = "scin_" + string(GetName()) + "_nr";
+  string parname = "hodo_" + string(GetName()) + "_nr";
   DBRequest list_1[] = {{parname.c_str(), &fNelem, kInt}, {0}};
   gHcParms->LoadParmValues(list_1, prefix);
 
@@ -429,9 +428,7 @@ Int_t THcLADHodoPlane::ReadDatabase(const TDatime &date) {
   fUseSampWaveform = 0;    // 0= do not use , 1 = use Sample Waveform
 
   gHcParms->LoadParmValues((DBRequest *)&list, prefix);
-  std::cout <<prefix << std::endl;
-  std::cout <<fNelem << std::endl;
-  std::cout <<fADCMode << std::endl;
+
   if (fCosmicFlag == 1)
     cout << " setup for cosmics in scint plane" << endl;
 
@@ -794,7 +791,6 @@ Int_t THcLADHodoPlane::ProcessHits(TClonesArray *rawhits, Int_t nexthit) {
 
     Int_t padnum = hit->fCounter;
     Int_t index = padnum - 1;
-    std::cout << "padnum: " << padnum << std::endl;
 
     // Positive Tdc hits
     THcRawTdcHit &rawPosTdcHit = hit->GetRawTdcHitPos();
@@ -1243,10 +1239,6 @@ Int_t THcLADHodoPlane::ProcessHits(TClonesArray *rawhits, Int_t nexthit) {
 
     } else {
       // same as using kADCSampleIntegral
-      std::cout << hit->GetRawAdcHitPos().GetRefTime() << std::endl;
-      std::cout << hit->GetRawAdcHitPos().GetPulseIntRaw() << std::endl;
-      std::cout << fPosPed[0] << std::endl;
-      std::cout << fPosPed[index] << std::endl;
       adcint_pos = hit->GetRawAdcHitPos().GetPulseIntRaw() - fPosPed[index];
       adcint_neg = hit->GetRawAdcHitNeg().GetPulseIntRaw() - fNegPed[index];
       badcraw_pos = badcraw_neg = kTRUE;
