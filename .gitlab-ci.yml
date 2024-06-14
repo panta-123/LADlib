@@ -1,0 +1,36 @@
+stages:
+  - build
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_IMAGE_NAME: "jeffersonlab/hallc-lad"
+
+docker-build:
+  stage: build
+  image:
+    name: docker:stable
+    entrypoint: [""]
+  services:
+    - docker:dind
+
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+  script:
+    - if [ "$CI_COMMIT_REF_NAME" == "main" ]; then
+        DOCKER_TAG="latest";
+      else
+        DOCKER_TAG="$CI_COMMIT_TAG";
+      fi
+    - docker buildx create --use --name mybuilder
+    - docker buildx build --platform linux/amd64,linux/arm64 -t $DOCKER_IMAGE_NAME:$DOCKER_TAG --push .
+
+  only:
+    - tags
+    - main
+
+  tags:
+    - docker
+
+  after_script:
+    - docker buildx rm mybuilder
