@@ -18,15 +18,6 @@ jobs:
         uses: antifree/json-to-variables@v1.1.1
         with:
           filename: 'release.json'
-
-      #- name: show output
-      #  run : echo "${{ env.hcana}}"
-      
-      - name: Extract hcana Version
-        id: extract_version
-        run: |
-          hcana_version="hcana-$(grep -oP 'find_package\(hcana\s+\K\d+\.\d+' CMakeLists.txt)"
-          echo "::set-output name=hcana_version::$hcana_version"
       -
         name: Docker meta
         id: meta
@@ -61,4 +52,3 @@ jobs:
           build-args: |
             DOCKER_TAG=${{ steps.meta.outputs.tags }}
             LADlib_VERSION=${{ github.ref_name}}
-            HCANA_VERSION=${{ steps.extract_version.outputs.hcana_version}}"
