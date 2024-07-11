@@ -3,7 +3,7 @@ FROM --platform=linux/amd64 almalinux:9.2
 
 ARG LADlib_VERSION=main
 ARG HCANA_REPO_NAME=hcana
-ARG HCANA_VERSION=hcana-0.99
+ARG HCANA_VERSION=develop
 
 SHELL ["/bin/bash", "-c"]
 ADD http://pki.jlab.org/JLabCA.crt /etc/pki/ca-trust/source/anchors/JLabCA.crt
@@ -21,6 +21,7 @@ RUN dnf -y install epel-release  git g++ cmake gcc-c++ make root root-mathcore r
 
 RUN git clone https://github.com/JeffersonLab/hcana.git --branch ${HCANA_VERSION} /${HCANA_REPO_NAME}-${HCANA_VERSION}
 WORKDIR "/${HCANA_REPO_NAME}-${HCANA_VERSION}"
+RUN git checkout $(git describe --abbrev=0)
 RUN git submodule init && git submodule update
 SHELL ["/bin/bash", "-c"]
 RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local/hcana -B build  -S /${HCANA_REPO_NAME}-${HCANA_VERSION}
